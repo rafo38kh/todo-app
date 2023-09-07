@@ -23,7 +23,7 @@ export default function ChangeTheme() {
   console.log(theme);
 
   return (
-    <div className="flex flex-row justify-between w-11/12 m-auto py-10">
+    <div className="flex flex-row justify-between w-11/12 m-auto py-10 max-w-2xl">
       <span className="uppercase text-4xl tracking-[0.4rem] font-bold text-lightGray">
         Todo
       </span>
