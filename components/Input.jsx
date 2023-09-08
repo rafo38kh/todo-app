@@ -93,7 +93,7 @@ export default function Input() {
 
           <ul className="hidden md:flex flex-row items-center justify-center gap-6 rounded-lg  dark:bg-bgBlueDark bg-lightGray p-4 md:p-0 dark:text-text-darkGrayishBlue">
             {["All", "Active", "Completed"].map((filter, i) => (
-              <li key={i}>
+              <li key={filter}>
                 <button
                   className={filters === filter && "text-blue-500"}
                   onClick={() => {
@@ -123,7 +123,7 @@ export default function Input() {
 
       <ul className="md:hidden flex flex-row items-center justify-center gap-6 mt-4 rounded-lg  dark:bg-bgBlueDark bg-lightGray p-4  dark:text-text-darkGrayishBlue">
         {["All", "Active", "Completed"].map((filter, i) => (
-          <li key={i}>
+          <li key={filter}>
             <button
               className={`${
                 filters === filter ? "text-blue-500" : "text-GrayishBlue"
