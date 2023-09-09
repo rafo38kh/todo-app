@@ -39,8 +39,8 @@ This is a solution to the [Todo-App-Main Challenge on Frontend Mentor]({https://
 
 ### Built with
 
-- Semantic HTML5 markup
-- SCSS custom properties
+- React
+- Tailwind CSS
 - CSS Flexbox
 - Mobile-first workflow
 
