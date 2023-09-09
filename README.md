@@ -32,8 +32,8 @@ This is a solution to the [Todo-App-Main Challenge on Frontend Mentor]({https://
 
 ### Links
 
-- Solution URL: []()
-- Live Site URL: []()
+- Solution URL: [https://www.frontendmentor.io/solutions/todo-app-with-nextjs-jm5c4kudeg](https://www.frontendmentor.io/solutions/todo-app-with-nextjs-jm5c4kudeg)
+- Live Site URL: [https://todo-ouktg4kwy-rafo38kh.vercel.app/](https://todo-ouktg4kwy-rafo38kh.vercel.app/)
 
 ## My process
 
