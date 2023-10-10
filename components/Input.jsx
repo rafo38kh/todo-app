@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import check from "../public/images/icon-check.svg";
 import cross from "../public/images/icon-cross.svg";
+import { db } from "@/config/firebase";
+import { getDocs, collection } from "firebase/firestore";
 
 export default function Input() {
   const [text, setText] = useState("");
-  const [todos, setTodos] = useState([]);
+  // const [todos, setTodos] = useState([]);
+
   const [filters, setFilters] = useState("All");
-  const itemsLength = todos.filter((todo) => !todo.completed).length;
+  // const itemsLength = todos.filter((todo) => !todo.completed).length;
+
+  const todoCollectionRef = collection(db, "todoList");
+
+  useEffect(() => {
+    const getTodolist = async () => {
+      try {
+        const data = await getDocs(todoCollectionRef);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getTodolist();
+  }, []);
 
   const addTodo = (e) => {
     e.preventDefault();

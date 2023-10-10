@@ -33,9 +33,9 @@ export default function ChangeTheme() {
         }
       >
         {theme === "light" ? (
-          <Image src={Moon} width={30} height={30} />
+          <Image src={Moon} width={30} height={30} alt="icon" />
         ) : (
-          <Image src={Sun} width={30} height={30} />
+          <Image src={Sun} width={30} height={30} alt="icon" />
         )}
       </button>
     </div>
