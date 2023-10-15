@@ -5,48 +5,29 @@ import check from "../public/images/icon-check.svg";
 import cross from "../public/images/icon-cross.svg";
 import { db } from "@/config/firebase";
 import { getDocs, collection } from "firebase/firestore";
+import { useAddTodo } from "../hooks/useAddTodo";
+import { useGetTodo } from "../hooks/useGetTodo";
 
 export default function Input() {
+  const { addTodo, toggleCompleted, deletTodo, filterCompleted } = useAddTodo();
+  const { todos } = useGetTodo();
+
   const [text, setText] = useState("");
-  // const [todos, setTodos] = useState([]);
+  const [isChecked, setIsCheked] = useState(false);
 
   const [filters, setFilters] = useState("All");
-  // const itemsLength = todos.filter((todo) => !todo.completed).length;
+  const itemsLength = todos.filter((todo) => !todo.completed).length;
 
-  const todoCollectionRef = collection(db, "todoList");
+  // const todoCollectionRef = collection(db, "todos");
 
-  useEffect(() => {
-    const getTodolist = async () => {
-      try {
-        const data = await getDocs(todoCollectionRef);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    getTodolist();
-  }, []);
-
-  const addTodo = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    setTodos((prevState) => [
-      ...prevState,
-      {
-        id: uuidv4(),
-        text: text,
-        completed: false,
-      },
-    ]);
+    addTodo({
+      text,
+      isTodo: false,
+    });
 
     setText("");
-  };
-
-  const checkCompleted = (el) => {
-    setTodos((prev) =>
-      prev.map((elem) =>
-        el.id === elem.id ? { ...elem, completed: !elem.completed } : elem
-      )
-    );
   };
 
   const handleDelete = (todo) => {
@@ -55,12 +36,12 @@ export default function Input() {
 
   return (
     <div className="w-11/12 m-auto max-w-2xl">
-      <form className="mb-4" action="" onSubmit={addTodo}>
+      <form className="mb-4" action="#" onSubmit={onSubmit}>
         <input
-          className="w-full dark:bg-bgBlueDark p-4 rounded-lg text-GrayishBlueText bg-lightGray"
-          type="input"
+          type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
+          className="w-full dark:bg-bgBlueDark p-4 rounded-lg text-GrayishBlueText bg-lightGray"
         />
       </form>
       <ul className="rounded-lg  h-[33rem] overflow-scroll">
@@ -79,7 +60,7 @@ export default function Input() {
               }`}
               key={todo.id}
             >
-              <button className="mr-4" onClick={() => checkCompleted(todo)}>
+              <button className="mr-4" onClick={() => toggleCompleted(todo)}>
                 {todo.completed ? (
                   <div className="rounded-full h-6 w-6 border border-DarkGrayishBlueBorder flex items-center justify-center bg-gradient-to-r from-grCyan to-grPurple hover:border">
                     <Image alt="check" src={check} />
@@ -91,7 +72,7 @@ export default function Input() {
 
               {todo.text}
 
-              <button className=" ml-auto" onClick={() => handleDelete(todo)}>
+              <button className=" ml-auto" onClick={() => deletTodo(todo.id)}>
                 <Image alt="cross" src={cross} />
               </button>
             </li>
@@ -125,10 +106,11 @@ export default function Input() {
 
           <button
             className="hover:text-darkBlue text-GrayishBlue dark:text-text-darkGrayishBlue dark:hover:text-lightGray"
-            onClick={() =>
-              setTodos((prevState) =>
-                prevState.filter((todo) => !todo.completed)
-              )
+            onClick={
+              () => filterCompleted(todos)
+              // setTodos((prevState) =>
+              //   prevState.filter((todo) => !todo.completed)
+              // )
             }
           >
             Clear completed

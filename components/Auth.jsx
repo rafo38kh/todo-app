@@ -1,28 +1,31 @@
 import { useState } from "react";
 import { auth, googleProvider } from "@/config/firebase";
-import {
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
 
 export default function Auth() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  //   const [email, setEmail] = useState();
+  //   const [password, setPassword] = useState();
 
-  const signIn = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      setEmail("");
-      setPassword("");
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //   const signIn = async () => {
+  //     try {
+  //       await createUserWithEmailAndPassword(auth, email, password);
+  //       setEmail("");
+  //       setPassword("");
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
 
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const results = await signInWithPopup(auth, googleProvider);
+      const authInfo = {
+        userID: results.user.uid,
+        name: results.user.displayName,
+        profilePhoto: results.user.photoURL,
+        isAuth: true,
+      };
+      localStorage.setItem("auth", JSON.stringify(authInfo));
       setEmail("");
       setPassword("");
     } catch (err) {
@@ -40,11 +43,11 @@ export default function Auth() {
     }
   };
 
-  console.log(auth?.currentUser?.email);
+  //   console.log(auth?.currentUser?.email);
 
   return (
     <div className="flex gap-4 flex-col w-40">
-      <input
+      {/* <input
         type="text"
         placeholder="Email"
         onChange={(e) => setEmail(e.target.value)}
@@ -53,12 +56,12 @@ export default function Auth() {
         type="password"
         placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
-      />
+      /> */}
       {auth?.currentUser ? (
         <button onClick={logOut}> Log Out</button>
       ) : (
         <div>
-          <button onClick={signIn}>Sign in</button>
+          {/* <button onClick={signIn}>Sign in</button> */}
           <button onClick={signInWithGoogle}>Sign in With Google</button>
         </div>
       )}
