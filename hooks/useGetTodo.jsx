@@ -16,7 +16,7 @@ export const useGetTodo = () => {
       const queryTodos = query(
         todoCollectionRef,
         where("userID", "==", userID),
-        orderBy("createdAt")
+        orderBy("createdAt", "desc")
       );
 
       unsubscribe = onSnapshot(queryTodos, (snapshot) => {
@@ -34,7 +34,7 @@ export const useGetTodo = () => {
     }
   };
   useEffect(() => {
-    getTodos();
+    if (userID) getTodos();
   }, []);
   return { todos };
 };
