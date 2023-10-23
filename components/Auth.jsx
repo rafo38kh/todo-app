@@ -33,6 +33,7 @@ export default function Auth({ isLoggedIn, setIsLoggedIn }) {
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("auth"))) setIsLoggedIn(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

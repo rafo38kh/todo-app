@@ -35,6 +35,7 @@ export const useGetTodo = () => {
   };
   useEffect(() => {
     if (userID) getTodos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return { todos };
 };

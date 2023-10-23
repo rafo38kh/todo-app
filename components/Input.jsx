@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import check from "../public/images/icon-check.svg";
@@ -13,12 +13,9 @@ export default function Input({ isLoggedIn }) {
   const { todos } = useGetTodo();
 
   const [text, setText] = useState("");
-  const [isChecked, setIsCheked] = useState(false);
 
   const [filters, setFilters] = useState("All");
   const itemsLength = todos.filter((todo) => !todo.completed).length;
-
-  // const todoCollectionRef = collection(db, "todos");
 
   const onSubmit = (e) => {
     e.preventDefault();

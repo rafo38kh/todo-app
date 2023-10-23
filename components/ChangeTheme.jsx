@@ -17,6 +17,7 @@ export default function ChangeTheme() {
     const user = JSON.parse(localStorage.getItem("auth"));
 
     setUserInfo(user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth?.currentUser]);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function ChangeTheme() {
     } else {
       setTheme("dark");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
