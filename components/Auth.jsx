@@ -36,7 +36,7 @@ export default function Auth({ isLoggedIn, setIsLoggedIn }) {
   }, []);
 
   return (
-    <div className="flex gap-4 items-end flex-col w-11/12 m-auto max-w-2xl pt-4">
+    <div className="flex gap-4 items-end flex-col w-11/12 m-auto max-w-2xl pt-4 text-bgBlueDark dark:text-lightGray">
       {isLoggedIn ? (
         <button
           className="flex justify-center items-center gap-2"
