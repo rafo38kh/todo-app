@@ -15,7 +15,7 @@ export default function ChangeTheme() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const user = JSON.parse(localStorage.getItem("auth"));
+      const user = JSON.parse(window.localStorage.getItem("auth"));
 
       setUserInfo(user);
     }

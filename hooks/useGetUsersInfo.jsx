@@ -1,8 +1,8 @@
 export const useGetUsersInfo = () => {
   if (typeof window !== "undefined") {
-    if (JSON.parse(localStorage.getItem("auth"))) {
+    if (JSON.parse(window.localStorage.getItem("auth"))) {
       const { userID, name, profilePhoto, isAuth } = JSON.parse(
-        localStorage.getItem("auth")
+        window.localStorage.getItem("auth")
       );
       return { userID, name, profilePhoto, isAuth };
     }
