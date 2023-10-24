@@ -16,7 +16,7 @@ export default function Auth({ isLoggedIn, setIsLoggedIn }) {
 
       setIsLoggedIn(true);
       if (typeof window !== "undefined") {
-        window.localStorage.setItem("auth", JSON.stringify(authInfo));
+        window?.localStorage?.setItem("auth", JSON.stringify(authInfo));
       }
     } catch (err) {
       console.error(err);
@@ -28,7 +28,7 @@ export default function Auth({ isLoggedIn, setIsLoggedIn }) {
       await signOut(auth);
       setIsLoggedIn(false);
       if (typeof window !== "undefined") {
-        window.localStorage.removeItem("auth");
+        window?.localStorage?.removeItem("auth");
       }
     } catch (err) {
       console.error(err);
@@ -36,9 +36,13 @@ export default function Auth({ isLoggedIn, setIsLoggedIn }) {
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (JSON.parse(window.localStorage.getItem("auth"))) setIsLoggedIn(true);
-    }
+    const auth =
+      typeof window !== "undefined"
+        ? JSON.parse(window?.localStorage?.getItem("auth"))
+        : null;
+
+    if (auth !== null) setIsLoggedIn(true);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

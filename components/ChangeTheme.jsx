@@ -14,11 +14,13 @@ export default function ChangeTheme() {
   const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const user = JSON.parse(window.localStorage.getItem("auth"));
+    const auth =
+      typeof window !== "undefined"
+        ? JSON.parse(window?.localStorage?.getItem("auth"))
+        : null;
 
-      setUserInfo(user);
-    }
+    setUserInfo(auth);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth?.currentUser]);
 
