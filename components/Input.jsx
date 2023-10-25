@@ -97,7 +97,7 @@ export default function Input({ isLoggedIn }) {
       <ul className=" max-h-[calc(100vh-25rem)] overflow-scroll">
         {constructTodoList(todos).map((item) => (
           <li key={uuidv4()} className="rounded-lg">
-            <span className="uppercase text-xs font-bold dark:bg-DarkGrayishBlueBorder bg-bg-LightGrayishBlue w-full text-lightText dark:text-text-darkGrayishBlue px-5 py-2 inline-block">
+            <span className="uppercase text-xs font-bold dark:bg-DarkGrayishBlueBorder bg-bg-LightGrayishBlue w-full text-lightText dark:text-text-darkGrayishBlue px-5 py-2 inline-block rounded-t-lg">
               {item.date === today ? "Today" : item.date}
             </span>
 
@@ -145,7 +145,7 @@ export default function Input({ isLoggedIn }) {
       </ul>
 
       {/* clear completed block */}
-      <div className="invisible sm:hidden md:visible md:flex justify-between mt-4 dark:bg-bgBlueDark bg-lightGray p-4  dark:text-text-darkGrayishBlue text-lightText   rounded-b-lg text-sm fixed w-11/12 m-auto max-w-2xl">
+      <div className="invisible sm:hidden md:visible md:flex justify-between mt-4 dark:bg-bgBlueDark bg-lightGray p-4  dark:text-text-darkGrayishBlue text-lightText   rounded-lg text-sm fixed w-11/12 m-auto max-w-2xl">
         <p className="text-GrayishBlue dark:text-text-darkGrayishBlue">
           {itemsLength === 0
             ? "Nothing to do"
@@ -210,22 +210,6 @@ export default function Input({ isLoggedIn }) {
           ))}
         </ul>
       </div>
-      {/* <ul className="md:hidden md:fixed z-50 flex flex-row items-center justify-center gap-6 my-4 rounded-lg  dark:bg-bgBlueDark bg-lightGray p-4  dark:text-text-darkGrayishBlue">
-        {["All", "Active", "Completed"].map((filter, i) => (
-          <li key={uuidv4()}>
-            <button
-              className={`${
-                filters === filter ? "text-blue-500" : "text-GrayishBlue"
-              }   hover:text-darkBlue dark:hover:text-lightGray`}
-              onClick={() => {
-                setFilters(filter);
-              }}
-            >
-              {filter}
-            </button>
-          </li>
-        ))}
-      </ul> */}
     </div>
   );
 }
