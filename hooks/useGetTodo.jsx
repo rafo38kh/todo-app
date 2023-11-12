@@ -1,41 +1,106 @@
-import { useState, useEffect } from "react";
-import { collection, query, where } from "firebase/firestore";
+import { useState, useEffect, useContext } from "react";
+import { doc, collection, query, where } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
+
 import { db } from "@/config/firebase";
+
 import { useGetUsersInfo } from "./useGetUsersInfo";
-import { onSnapshot, orderBy } from "firebase/firestore";
 
-export const useGetTodo = () => {
+import { FolderIDContext } from "@/contexts/FolderIDContextProvider";
+
+export const useGetTodo = (folderId) => {
   const [todos, setTodos] = useState([]);
+  const [folders, setFolders] = useState([]);
 
-  const todoCollectionRef = collection(db, "todos");
+  const { folderID } = useContext(FolderIDContext);
+
   const { userID } = useGetUsersInfo();
 
-  const getTodos = async () => {
-    let unsubscribe;
-    try {
-      const queryTodos = query(
-        todoCollectionRef,
-        where("userID", "==", userID),
-        orderBy("createdAt", "desc")
-      );
+  const retrieveFoldersData = () => {
+    const foldersCollectionRef = collection(db, "folders");
 
-      unsubscribe = onSnapshot(queryTodos, (snapshot) => {
-        const docs = [];
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          const id = doc.id;
+    const unsubscribe = onSnapshot(foldersCollectionRef, (snapshot) => {
+      const folderNames = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-          docs.push({ ...data, id });
-        });
-        setTodos(docs);
-      });
-    } catch (err) {
-      console.error(err);
-    }
+      setFolders(folderNames);
+    });
+
+    return unsubscribe;
   };
+
+  // const getAllTodos = async () => {
+  //   try {
+  //     if (!folderName) {
+  //       throw new Error("Folder name is not specified.");
+  //     }
+
+  //     const todoColRef = collection(db, "folders", folderName, "todos");
+
+  //     const querySnapshot = await getDocs(todoColRef);
+
+  //     const todos = querySnapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+
+  //     setTodos(todos);
+  //   } catch (error) {
+  //     console.error("Error getting todos:", error.message);
+  //     return [];
+  //   }
+  // };
+
+  const getAllTodos = (folderId) => {
+    const todosCollectionRef = collection(db, "folders", folderId, "todos");
+    // const todosCollectionRef = collection(db, "todos");
+
+    // const todosQuery = query(
+    //   todosCollectionRef,
+    //   where("folderId", "==", folderId)
+    // );
+
+    const unsubscribe = onSnapshot(todosCollectionRef, (snapshot) => {
+      const todosData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setTodos(todosData);
+    });
+
+    return unsubscribe;
+  };
+
   useEffect(() => {
-    if (userID) getTodos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    let getAllTodosUnsubscribe;
+
+    if (userID && folderID) {
+      getAllTodosUnsubscribe = getAllTodos(folderID);
+    }
+
+    return () => {
+      if (getAllTodosUnsubscribe) {
+        getAllTodosUnsubscribe();
+      }
+    };
+  }, [folderID]);
+
+  useEffect(() => {
+    let retrieveFoldersDataUnsubscribe;
+
+    if (userID) {
+      retrieveFoldersDataUnsubscribe = retrieveFoldersData();
+    }
+
+    return () => {
+      if (retrieveFoldersDataUnsubscribe) {
+        retrieveFoldersDataUnsubscribe();
+      }
+    };
   }, []);
-  return { todos };
+
+  return { todos, folders };
 };
