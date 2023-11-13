@@ -3,9 +3,10 @@ import { useEffect } from "react";
 import { auth, googleProvider } from "@/config/firebase";
 import { signInWithPopup, signOut } from "firebase/auth";
 
-export default function Auth({ isLoggedIn, setIsLoggedIn }) {
+export default function Auth({ isLoggedIn, setIsLoggedIn, setShowSettings }) {
   const signInWithGoogle = async () => {
     try {
+      setShowSettings(false);
       const results = await signInWithPopup(auth, googleProvider);
       const authInfo = {
         userID: results.user.uid,
@@ -27,6 +28,7 @@ export default function Auth({ isLoggedIn, setIsLoggedIn }) {
     try {
       await signOut(auth);
       setIsLoggedIn(false);
+      setShowSettings(false);
       if (typeof window !== "undefined") {
         window?.localStorage?.removeItem("auth");
       }
@@ -42,12 +44,10 @@ export default function Auth({ isLoggedIn, setIsLoggedIn }) {
         : null;
 
     if (auth !== null) setIsLoggedIn(true);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="flex gap-4 items-end flex-col w-11/12 m-auto max-w-2xl pt-4 text-bgBlueDark dark:text-lightGray">
+    <div className="text-lightGray">
       {isLoggedIn ? (
         <button
           className="flex justify-center items-center gap-2"
@@ -68,7 +68,7 @@ export default function Auth({ isLoggedIn, setIsLoggedIn }) {
               d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
             />
           </svg>
-          <span>Log Out</span>
+          <span>Sign Out</span>
         </button>
       ) : (
         <button

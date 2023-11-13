@@ -9,6 +9,7 @@ import { useAddTodo } from "../hooks/useAddTodo";
 import { useGetTodo } from "../hooks/useGetTodo";
 import { FolderIDContext } from "@/contexts/FolderIDContextProvider";
 import EditTodoItem from "./EditTodoItem";
+import NotLoggedIn from "./NotLoggedIn";
 
 export default function Input({ isLoggedIn }) {
   const { folderID, setFolderID } = useContext(FolderIDContext);
@@ -27,6 +28,7 @@ export default function Input({ isLoggedIn }) {
   const [filters, setFilters] = useState("All");
   const [folderName, setFolderName] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [currentTodoIndex, setCurrentTodoIndex] = useState(0);
 
   const itemsLength = todos?.filter((todo) => !todo?.completed).length;
   const handleAddFolder = async (e) => {
@@ -110,9 +112,7 @@ export default function Input({ isLoggedIn }) {
   }).format(new Date());
 
   return !isLoggedIn ? (
-    <span className="text-GrayishBlue bg-lightGray rounded-lg  dark:bg-bgBlueDark mt-4 w-full inline-block text-center p-4">
-      Not Logged In
-    </span>
+    <NotLoggedIn />
   ) : (
     <div>
       <div className="w-11/12 m-auto max-w-2xl relative">
@@ -138,40 +138,84 @@ export default function Input({ isLoggedIn }) {
                     if (filters === "Active") return !todo.completed;
                     if (filters === "Completed") return todo.completed;
                   })
-                  .map((todo) => (
-                    <li
-                      key={todo.id}
-                      className={`flex flex-row justify-between truncate group w-full last:border-b-0 dark:bg-bgBlueDark p-4 border-b dark:border-b-DarkGrayishBlueBorder border-b-bg-LightGrayishBlue dark:text-text-darkGrayishBlue text-lightText bg-lightGray ${
-                        todo.completed &&
-                        "line-through dark:text-GrayishBlueText text-GrayishBlue"
-                      }`}
-                    >
-                      <div className="flex justify-center items-center">
-                        <button
-                          className="mr-4"
-                          onClick={() => toggleCompleted(todo, folderID)}
-                        >
-                          {todo.completed ? (
-                            <div className="rounded-full h-6 w-6 border border-DarkGrayishBlueBorder flex items-center justify-center bg-gradient-to-r from-grCyan to-grPurple hover:border">
-                              <Image alt="check" src={check} />
-                            </div>
+                  .map((todo, idx) => {
+                    const currentTodoIsSelected = currentTodoIndex === idx;
+
+                    return (
+                      <li
+                        key={todo.id}
+                        className={`flex flex-row justify-between truncate group w-full last:border-b-0 dark:bg-bgBlueDark p-4 border-b dark:border-b-DarkGrayishBlueBorder border-b-bg-LightGrayishBlue dark:text-text-darkGrayishBlue text-lightText bg-lightGray ${
+                          todo.completed &&
+                          "line-through dark:text-GrayishBlueText text-GrayishBlue"
+                        } ${currentTodoIsSelected && "py-10"}`}
+                      >
+                        <div className="flex justify-center items-center">
+                          <button
+                            className="mr-4"
+                            onClick={() => toggleCompleted(todo, folderID)}
+                          >
+                            {todo.completed ? (
+                              <div className="rounded-full h-6 w-6 border border-DarkGrayishBlueBorder flex items-center justify-center bg-gradient-to-r from-grCyan to-grPurple hover:border">
+                                <Image alt="check" src={check} />
+                              </div>
+                            ) : (
+                              <div className="rounded-full h-6 w-6 border border-DarkGrayishBlueBorder" />
+                            )}
+                          </button>
+                          {isEditing ? (
+                            <EditTodoItem
+                              todo={todo}
+                              isEditing={isEditing}
+                              setIsEditing={setIsEditing}
+                            />
                           ) : (
-                            <div className="rounded-full h-6 w-6 border border-DarkGrayishBlueBorder" />
+                            <span>{todo.todo}</span>
                           )}
-                        </button>
-                        {isEditing ? (
-                          <EditTodoItem
-                            todo={todo}
-                            isEditing={isEditing}
-                            setIsEditing={setIsEditing}
-                          />
-                        ) : (
-                          <span>{todo.todo}</span>
-                        )}
-                      </div>
-                      <div className="flex justify-center items-center gap-6">
-                        {!isEditing && (
-                          <button onClick={() => setIsEditing(true)}>
+                        </div>
+
+                        <div className="relative">
+                          {currentTodoIsSelected && (
+                            <div className="absolute right-10 top-1/2 -translate-y-1/2 flex gap-4 items-center flex-col">
+                              {!isEditing && (
+                                <button
+                                  // className="absolute"
+                                  onClick={() => setIsEditing(true)}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                  >
+                                    <path
+                                      path
+                                      // fill="#494C6B"
+                                      // fill-rule="evenodd"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                                    />
+                                  </svg>
+                                </button>
+                              )}
+                              <button
+                                className="bottom-10 z-50"
+                                onClick={() => deletTodo(todo.id, folderID)}
+                              >
+                                <Image alt="cross" src={cross} />
+                              </button>
+                            </div>
+                          )}
+
+                          <button
+                            onClick={() => {
+                              setCurrentTodoIndex(idx);
+                              // setIsTodoSettingsOpen((prevState) => !prevState);
+                            }}
+                            className=""
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -181,25 +225,16 @@ export default function Input({ isLoggedIn }) {
                               class="w-6 h-6"
                             >
                               <path
-                                path
-                                // fill="#494C6B"
-                                // fill-rule="evenodd"
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
-                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                                d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                               />
                             </svg>
                           </button>
-                        )}
-                        <button
-                          className=" ml-auto"
-                          onClick={() => deletTodo(todo.id, folderID)}
-                        >
-                          <Image alt="cross" src={cross} />
-                        </button>
-                      </div>
-                    </li>
-                  ))}
+                        </div>
+                      </li>
+                    );
+                  })}
               </ul>
             </li>
           ))}
