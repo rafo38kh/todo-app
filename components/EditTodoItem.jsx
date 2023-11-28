@@ -1,10 +1,12 @@
 "use client";
 import { useState, useContext } from "react";
+import { useTheme } from "next-themes";
 
 import { useAddTodo } from "@/hooks/useAddTodo";
 import { FolderIDContext } from "@/contexts/FolderIDContextProvider";
 
 export default function EditTodoItem({ todo, isEditing, setIsEditing }) {
+  const { theme } = useTheme();
   const { updateTodo } = useAddTodo();
   const { folderID } = useContext(FolderIDContext);
 
@@ -19,22 +21,28 @@ export default function EditTodoItem({ todo, isEditing, setIsEditing }) {
   return (
     <form
       onSubmit={handleEditSubmit}
-      className="flex items-center justify-between w-full"
+      className="flex items-start justify-between gap-2 w-full"
     >
       <input
-        className="dark:bg-bgBlueDark border-b-[.0625rem] border-transparent outline-none focus:border-white/30"
+        className="bg-[#fefae0] dark:bg-DarkSlateGray "
         type="text"
         value={updatedText}
         onChange={(e) => setUpdatedText(e.target.value)}
       />
 
       <button type="button" onClick={handleEditSubmit}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-4 h-4"
+        >
           <path
-            fill="none"
-            stroke="#FFF"
-            stroke-width="2"
-            d="M1 4.304L3.696 7l6-6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
       </button>

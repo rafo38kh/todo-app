@@ -13,7 +13,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={`${inter.className}  bg-[#fefae0] dark:bg-DarkSlateGray dark:text-lightCyan text-DarkSlateGray`}
+      >
         <FolderIDContextProvider>
           <ThemeContextProvider>{children}</ThemeContextProvider>
         </FolderIDContextProvider>

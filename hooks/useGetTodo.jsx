@@ -31,36 +31,8 @@ export const useGetTodo = (folderId) => {
     return unsubscribe;
   };
 
-  // const getAllTodos = async () => {
-  //   try {
-  //     if (!folderName) {
-  //       throw new Error("Folder name is not specified.");
-  //     }
-
-  //     const todoColRef = collection(db, "folders", folderName, "todos");
-
-  //     const querySnapshot = await getDocs(todoColRef);
-
-  //     const todos = querySnapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     }));
-
-  //     setTodos(todos);
-  //   } catch (error) {
-  //     console.error("Error getting todos:", error.message);
-  //     return [];
-  //   }
-  // };
-
   const getAllTodos = (folderId) => {
     const todosCollectionRef = collection(db, "folders", folderId, "todos");
-    // const todosCollectionRef = collection(db, "todos");
-
-    // const todosQuery = query(
-    //   todosCollectionRef,
-    //   where("folderId", "==", folderId)
-    // );
 
     const unsubscribe = onSnapshot(todosCollectionRef, (snapshot) => {
       const todosData = snapshot.docs.map((doc) => ({
@@ -102,5 +74,5 @@ export const useGetTodo = (folderId) => {
     };
   }, []);
 
-  return { todos, folders };
+  return { todos, setTodos, folders };
 };

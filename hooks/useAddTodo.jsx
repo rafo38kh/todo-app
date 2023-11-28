@@ -1,6 +1,7 @@
 import {
   doc,
   addDoc,
+  getDoc,
   updateDoc,
   deleteDoc,
   collection,
@@ -18,6 +19,7 @@ export const useAddTodo = () => {
 
       const newFolderRef = await addDoc(foldersCollectionRef, {
         userID,
+        todosLength: 0,
         name: folderName,
         createdAt: serverTimestamp(),
       });
@@ -32,6 +34,9 @@ export const useAddTodo = () => {
     try {
       const folderDocRef = doc(db, "folders", folderId);
 
+      const folderDoc = await getDoc(folderDocRef);
+      const currentTodosLength = folderDoc.data()?.todosLength || 0;
+
       const todosCollectionRef = collection(folderDocRef, "todos");
 
       await addDoc(todosCollectionRef, {
@@ -39,6 +44,10 @@ export const useAddTodo = () => {
         todo: todoText,
         completed: false,
         createdAt: serverTimestamp(),
+      });
+
+      await updateDoc(folderDocRef, {
+        todosLength: currentTodosLength + 1,
       });
 
       console.log("Todo added to folder successfully.");
@@ -73,15 +82,6 @@ export const useAddTodo = () => {
     }
   };
 
-  //   const filterCompleted = async (todos) => {
-  //     const todoDoc = doc(db, "todos", completed);
-
-  //     todos
-  //       .filter((el) => el.completed)
-  //       .map((item) => item.id)
-  //       .forEach(item => await deleteDoc(item));
-  //   };
-
   const filterCompleted = async (todos, folderId) => {
     const todosCollectionRef = collection(db, "folders", folderId, "todos");
 
@@ -102,10 +102,18 @@ export const useAddTodo = () => {
   };
 
   const deletTodo = async (id, folderId) => {
+    const folderDocRef = doc(db, "folders", folderId);
+
+    const folderDoc = await getDoc(folderDocRef);
+    const currentTodosLength = folderDoc.data()?.todosLength || 0;
+
     const todoDocRef = doc(db, "folders", folderId, "todos", id);
 
     try {
       await deleteDoc(todoDocRef);
+      await updateDoc(folderDocRef, {
+        todosLength: currentTodosLength - 1,
+      });
     } catch (err) {
       console.error(err);
     }
