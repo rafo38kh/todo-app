@@ -1,9 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+
+import { useGetUsersInfo } from "@/hooks/useGetUsersInfo";
+
 import Auth from "./Auth";
 import UserInfo from "./UserInfo";
 import ChangeTheme from "./ChangeTheme";
-import { useGetUsersInfo } from "@/hooks/useGetUsersInfo";
 
 export default function TopSettings({ isLoggedIn, setIsLoggedIn }) {
   const [showSettings, setShowSettings] = useState(false);
@@ -39,54 +42,63 @@ export default function TopSettings({ isLoggedIn, setIsLoggedIn }) {
 
   return (
     <div className="w-11/12 m-auto max-w-2xl py-4">
-      <div className="flex justify-between">
-        <span className="text-2xl tracking-[0.4rem] font-bold text-buttonCol">
+      <motion.div
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: [-100, 20, 0], opacity: 1 }}
+        transition={{ type: "tween", duration: 0.3 }}
+        className="flex w-full justify-between"
+      >
+        <span className="inline-block flex-shrink-0 text-2xl tracking-[0.4rem] font-bold text-buttonCol">
           ToDo List
         </span>
 
-        <button
-          ref={buttonRef}
-          className="relative "
-          onClick={handleSettingsOpen}
-          type="button"
-        >
-          {profilePhoto ? (
-            <div className="relative rounded-full overflow-hidden w-7 aspect-square border-[2px] border-slateGray">
-              <Image src={profilePhoto} fill alt="Picture of the author" />
-            </div>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-              />
-            </svg>
-          )}
-        </button>
-      </div>
-
-      {showSettings && (
         <div
-          ref={menuRef}
-          className="absolute z-50 top-12 right-5 border-[0.1px] border-lightCyan/50 bg-[#E6CBAF] dark:bg-[#244149] p-4 rounded-lg flex flex-col justify-start gap-4"
+          ref={buttonRef}
+          className="relative w-full flex items-center justify-end"
         >
-          <UserInfo />
-          <ChangeTheme />
-          <Auth
-            isLoggedIn={isLoggedIn}
-            setIsLoggedIn={setIsLoggedIn}
-            setShowSettings={setShowSettings}
-          />
+          <button
+            type="button"
+            onClick={handleSettingsOpen}
+            className={`relative rounded-full overflow-hidden w-7 aspect-square ${
+              profilePhoto ? "border-[2px] border-slateGray" : null
+            }`}
+          >
+            {profilePhoto ? (
+              <Image src={profilePhoto} fill alt="Picture of the author" />
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                />
+              </svg>
+            )}
+          </button>
+
+          {showSettings && (
+            <div
+              ref={menuRef}
+              className="absolute z-50 top-12 right-0 border-[0.1px] border-lightCyan/50 bg-tangerine dark:bg-TopSettingsBg p-4 rounded-lg flex flex-col justify-start gap-4"
+            >
+              <UserInfo />
+              <ChangeTheme />
+              <Auth
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                setShowSettings={setShowSettings}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </motion.div>
     </div>
   );
 }

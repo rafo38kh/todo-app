@@ -1,21 +1,10 @@
 import React from "react";
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { auth } from "@/config/firebase";
+
 import { useGetUsersInfo } from "@/hooks/useGetUsersInfo";
 
 export default function UserInfo() {
   const { profilePhoto, name } = useGetUsersInfo();
-  // const [userInfo, setUserInfo] = useState({});
-
-  // useEffect(() => {
-  //   const auth =
-  //     typeof window !== "undefined"
-  //       ? JSON.parse(window?.localStorage?.getItem("auth"))
-  //       : null;
-
-  //   setUserInfo(auth);
-  // }, [auth?.currentUser]);
 
   return (
     <div>

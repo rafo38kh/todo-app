@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { doc, collection, query, where } from "firebase/firestore";
+import { doc, collection, query, orderBy } from "firebase/firestore";
 import { onSnapshot } from "firebase/firestore";
 
 import { db } from "@/config/firebase";
@@ -19,7 +19,12 @@ export const useGetTodo = (folderId) => {
   const retrieveFoldersData = () => {
     const foldersCollectionRef = collection(db, "folders");
 
-    const unsubscribe = onSnapshot(foldersCollectionRef, (snapshot) => {
+    const sortedFoldersQuery = query(
+      foldersCollectionRef,
+      orderBy("createdAt", "desc")
+    );
+
+    const unsubscribe = onSnapshot(sortedFoldersQuery, (snapshot) => {
       const folderNames = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
