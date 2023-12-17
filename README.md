@@ -33,7 +33,7 @@ This is a solution to the [Todo-App-Main Challenge on Frontend Mentor]({https://
 ### Links
 
 - Solution URL: [https://www.frontendmentor.io/solutions/todo-app-with-nextjs-jm5c4kudeg](https://www.frontendmentor.io/solutions/todo-app-with-nextjs-jm5c4kudeg)
-- Live Site URL: [https://todo-ouktg4kwy-rafo38kh.vercel.app/](https://todo-ouktg4kwy-rafo38kh.vercel.app/)
+- Live Site URL: [https://todo-6qn78n6pg-rafo38kh.vercel.app/](https://todo-6qn78n6pg-rafo38kh.vercel.app/)
 
 ## My process
 
@@ -42,6 +42,7 @@ This is a solution to the [Todo-App-Main Challenge on Frontend Mentor]({https://
 - React
 - Tailwind CSS
 - CSS Flexbox
+- Framer Motion
 - Mobile-first workflow
 
 ## Author
