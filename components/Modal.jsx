@@ -20,7 +20,7 @@ export default function Modal({ isModalOpen, setIsModalOpen }) {
 
   return mounted
     ? createPortal(
-        <div className="bg-black h-screen w-full fixed inset-0 bg-black/80 flex flex-col justify-center items-center px-4 ">
+        <div className="bg-black h-screen w-full fixed inset-0 bg-black/80 flex flex-col justify-center items-center px-4">
           <div className="flex flex-col items-end">
             <button
               className="mb-2"
@@ -44,11 +44,11 @@ export default function Modal({ isModalOpen, setIsModalOpen }) {
             </button>
             <div className="bg-[#faedcd] dark:bg-slateGray p-8 rounded-md max-w-sm overflow-hidden">
               <span className="text-xl font-bold dark:text-white text-primary-700 break-all">
-                Delete this folder "{currentFolder?.name}" ?
+                Delete this folder &quot;{currentFolder?.name}&quot; ?
               </span>
               <p className="text-sm font-normal break-all my-4">
-                Are you sure you want to delete the "{currentFolder?.name}"
-                folder and its contents? This action cannot be reversed.
+                Are you sure you want to delete the &quot;{currentFolder?.name}
+                &quot; folder and its contents? This action cannot be reversed.
               </p>
               <button
                 type="button"
