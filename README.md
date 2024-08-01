@@ -33,7 +33,7 @@ This is a solution to the [Todo-App-Main Challenge on Frontend Mentor]({https://
 ### Links
 
 - Solution URL: [https://www.frontendmentor.io/solutions/todo-app-with-nextjs-jm5c4kudeg](https://www.frontendmentor.io/solutions/todo-app-with-nextjs-jm5c4kudeg)
-- Live Site URL: [https://todo-6qn78n6pg-rafo38kh.vercel.app/](https://todo-6qn78n6pg-rafo38kh.vercel.app/)
+- Live Site URL: [https://todo-app-rafokh.vercel.app/](https://todo-app-rafokh.vercel.app/)
 
 ## My process
 
