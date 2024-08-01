@@ -13,7 +13,7 @@ export default function TodoItem({ todo, item, today, folderID }) {
   return (
     <li
       value={todo.id}
-      className={`flex flex-row justify-between truncate group mb-4 w-full border-[0.1px] dark:border-lightCyan/50 border-DarkSlateGray rounded-md  p-4`}
+      className={`flex flex-row justify-between gap-2 group mb-4  border-[0.1px] dark:border-lightCyan/50 border-DarkSlateGray rounded-md p-4`}
     >
       <div className="flex justify-center items-center w-full">
         <button
@@ -28,7 +28,7 @@ export default function TodoItem({ todo, item, today, folderID }) {
             <div className="rounded-full h-6 w-6 border border-DarkSlateGray dark:border-lightCyan" />
           )}
         </button>
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full max-w-[17rem] md:max-w-full">
           <span className={`uppercase text-[.6rem] pl-2 $`}>
             {item.date === today ? "Today" : item.date}
           </span>
@@ -40,7 +40,7 @@ export default function TodoItem({ todo, item, today, folderID }) {
             />
           ) : (
             <>
-              <span className={` pl-2 ${todo.completed && "line-through "}`}>
+              <span className={` pl-2  ${todo.completed && "line-through "}`}>
                 {todo.todo}
               </span>
             </>
